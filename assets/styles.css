@@ -47,6 +47,44 @@ h1 {
   color: var(--muted);
 }
 
+/* Button styles */
+.btn {
+  margin-top: 1rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg);
+  background-color: var(--text);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.05s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+  opacity: 0.95;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:focus {
+  outline: none;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--muted);
+  outline-offset: 2px;
+}
+
+/* Status message */
+.status {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+  display: none;
+}
+.status.visible {
+  display: block;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0b1220;   /* darker slate */

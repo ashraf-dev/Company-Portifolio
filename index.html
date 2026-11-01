@@ -11,6 +11,29 @@
     <main class="container" role="main">
       <h1>haddadco for parts</h1>
       <p class="subtitle">Coming soon — quality parts, reliable service.</p>
+      <button id="contact-btn" class="btn" type="button" aria-label="Contact us by email">Contact us</button>
+      <p id="contact-status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
     </main>
+
+    <script>
+      (function () {
+        var btn = document.getElementById('contact-btn');
+        var statusEl = document.getElementById('contact-status');
+        if (!btn || !statusEl) return;
+
+        btn.addEventListener('click', function () {
+          var confirmMsg = 'you will contact our email';
+          if (window.confirm(confirmMsg)) {
+            // Update status before navigating
+            statusEl.textContent = 'we get your response success';
+            statusEl.classList.add('visible');
+            // Defer navigation briefly to allow status to render
+            setTimeout(function () {
+              window.location.href = 'mailto:ashrafhd80@gmail.com';
+            }, 100);
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
