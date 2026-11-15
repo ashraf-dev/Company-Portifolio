@@ -47,6 +47,31 @@ h1 {
   color: var(--muted);
 }
 
+/* Date control group */
+.control-group {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+.control-group label {
+  font-weight: 600;
+  color: var(--muted);
+}
+input[type="date"] {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 0.5rem;
+  color: var(--text);
+  background-color: transparent;
+}
+input[type="date"]:focus { outline: none; }
+input[type="date"]:focus-visible {
+  outline: 3px solid var(--muted);
+  outline-offset: 2px;
+}
+
 /* Button styles */
 .btn {
   margin-top: 1rem;
