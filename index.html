@@ -11,25 +11,188 @@
     <main class="container" role="main">
       <h1>haddadco for parts</h1>
       <p class="subtitle">Coming soon — quality parts, reliable service.</p>
-      <button id="contact-btn" class="btn" type="button" aria-label="Contact us by email">Contact us</button>
+
+      <h2 class="section-title" id="contact-heading">Contact us</h2>
+      <form id="contact-form" class="contact-form" aria-labelledby="contact-heading" novalidate>
+        <div class="form-field">
+          <label for="contact-name">Name<span aria-hidden="true"> *</span></label>
+          <input id="contact-name" name="name" type="text" autocomplete="name" required aria-required="true" />
+          <p class="field-error" id="error-name"></p>
+        </div>
+
+        <div class="form-field">
+          <label for="contact-email">Email<span aria-hidden="true"> *</span></label>
+          <input id="contact-email" name="email" type="email" autocomplete="email" required aria-required="true" />
+          <p class="field-error" id="error-email"></p>
+        </div>
+
+        <div class="form-field">
+          <label for="contact-mobile">Mobile</label>
+          <input id="contact-mobile" name="mobile" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. +1 555 123 4567" />
+          <p class="field-error" id="error-mobile"></p>
+        </div>
+
+        <div class="form-field">
+          <label for="contact-description">Description</label>
+          <textarea id="contact-description" name="description" rows="4" placeholder="How can we help?"></textarea>
+          <p class="field-error" id="error-description"></p>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn" type="submit" aria-label="Send your message via email">Send</button>
+        </div>
+      </form>
+
       <p id="contact-status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
     </main>
 
     <script>
       (function () {
-        var btn = document.getElementById('contact-btn');
+        var form = document.getElementById('contact-form');
         var statusEl = document.getElementById('contact-status');
-        if (!btn || !statusEl) return;
+        if (!form || !statusEl) return;
 
-        btn.addEventListener('click', function () {
-          var confirmMsg = 'you will contact our email';
-          if (window.confirm(confirmMsg)) {
-            // Update status before navigating
-            statusEl.textContent = 'we get your response success';
+        var nameEl = document.getElementById('contact-name');
+        var emailEl = document.getElementById('contact-email');
+        var mobileEl = document.getElementById('contact-mobile');
+        var descEl = document.getElementById('contact-description');
+
+        var errName = document.getElementById('error-name');
+        var errEmail = document.getElementById('error-email');
+        var errMobile = document.getElementById('error-mobile');
+        var errDesc = document.getElementById('error-description');
+
+        function setError(input, errorEl, message) {
+          if (!input || !errorEl) return;
+          input.setAttribute('aria-invalid', 'true');
+          var describedby = (input.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+          if (describedby.indexOf(errorEl.id) === -1) {
+            describedby.push(errorEl.id);
+            input.setAttribute('aria-describedby', describedby.join(' '));
+          }
+          input.classList.add('input-error');
+          errorEl.textContent = message || '';
+        }
+
+        function clearError(input, errorEl) {
+          if (!input || !errorEl) return;
+          input.removeAttribute('aria-invalid');
+          var describedby = (input.getAttribute('aria-describedby') || '').split(' ').filter(function (id) { return id && id !== errorEl.id; });
+          if (describedby.length) {
+            input.setAttribute('aria-describedby', describedby.join(' '));
+          } else {
+            input.removeAttribute('aria-describedby');
+          }
+          input.classList.remove('input-error');
+          errorEl.textContent = '';
+        }
+
+        function validateEmail(value) {
+          // Basic email pattern; keep lenient but effective
+          var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return re.test(value);
+        }
+
+        function validateMobile(value) {
+          if (!value) return true; // optional
+          // Allow +, digits, spaces, dashes, dots, parentheses; ensure at least 7 digits
+          var allowed = /^[+\d\s().-]+$/;
+          if (!allowed.test(value)) return false;
+          var digits = value.replace(/\D/g, '');
+          return digits.length >= 7;
+        }
+
+        function resetStatus() {
+          statusEl.textContent = '';
+          statusEl.classList.remove('visible');
+        }
+
+        // Clear errors as the user types
+        [
+          [nameEl, errName],
+          [emailEl, errEmail],
+          [mobileEl, errMobile],
+          [descEl, errDesc]
+        ].forEach(function (pair) {
+          var input = pair[0];
+          var errorEl = pair[1];
+          if (!input) return;
+          input.addEventListener('input', function () {
+            clearError(input, errorEl);
+            resetStatus();
+          });
+        });
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          resetStatus();
+
+          var name = (nameEl.value || '').trim();
+          var email = (emailEl.value || '').trim();
+          var mobile = (mobileEl.value || '').trim();
+          var desc = (descEl.value || '').trim();
+
+          var hasError = false;
+
+          // Validate name
+          if (!name) {
+            setError(nameEl, errName, 'Please enter your name.');
+            hasError = true;
+          } else {
+            clearError(nameEl, errName);
+          }
+
+          // Validate email
+          if (!email) {
+            setError(emailEl, errEmail, 'Please enter your email address.');
+            hasError = true;
+          } else if (!validateEmail(email)) {
+            setError(emailEl, errEmail, 'Please enter a valid email address.');
+            hasError = true;
+          } else {
+            clearError(emailEl, errEmail);
+          }
+
+          // Validate mobile (optional)
+          if (mobile && !validateMobile(mobile)) {
+            setError(mobileEl, errMobile, 'Please enter a valid mobile number.');
+            hasError = true;
+          } else {
+            clearError(mobileEl, errMobile);
+          }
+
+          // Description optional
+          clearError(descEl, errDesc);
+
+          if (hasError) {
+            statusEl.textContent = 'Please correct the errors in the form.';
             statusEl.classList.add('visible');
-            // Defer navigation briefly to allow status to render
+            // Focus the first invalid field
+            var firstInvalid = form.querySelector('[aria-invalid="true"]');
+            if (firstInvalid && typeof firstInvalid.focus === 'function') firstInvalid.focus();
+            return;
+          }
+
+          var subject = 'Contact from ' + name;
+          var body = [
+            'Name: ' + name,
+            'Email: ' + email,
+            'Mobile: ' + (mobile || '-') ,
+            '',
+            'Description:',
+            desc || '-'
+          ].join('\n');
+
+          var mailto = 'mailto:ashrafhd80@gmail.com' +
+            '?subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body);
+
+          var confirmMsg = 'You will contact us by email. Continue?';
+          if (window.confirm(confirmMsg)) {
+            statusEl.textContent = 'Success! Opening your email app…';
+            statusEl.classList.add('visible');
             setTimeout(function () {
-              window.location.href = 'mailto:ashrafhd80@gmail.com';
+              window.location.href = mailto;
             }, 100);
           }
         });

@@ -3,6 +3,8 @@
   --bg: #f8fafc;      /* slate-50 */
   --text: #0f172a;    /* slate-900 */
   --muted: #475569;   /* slate-600 */
+  --danger: #b91c1c;  /* red-700 */
+  --danger-bg: #fee2e2; /* red-100 */
 }
 
 /* Reset-ish defaults */
@@ -47,6 +49,11 @@ h1 {
   color: var(--muted);
 }
 
+.section-title {
+  margin: 2rem 0 0.5rem;
+  font-size: clamp(1.25rem, 2.5vw + 0.25rem, 1.5rem);
+}
+
 /* Button styles */
 .btn {
   margin-top: 1rem;
@@ -85,10 +92,86 @@ h1 {
   display: block;
 }
 
+/* Contact form */
+.contact-form {
+  margin-top: 0.5rem;
+  width: 100%;
+  max-width: 32rem; /* ~512px */
+  text-align: left;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.form-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.2); /* based on text color */
+  border-radius: 0.5rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible {
+  outline: 3px solid var(--muted);
+  outline-offset: 2px;
+}
+
+.input-error {
+  border-color: var(--danger) !important;
+  background-color: var(--danger-bg);
+}
+
+.field-error {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--danger);
+}
+.field-error:empty {
+  display: none;
+}
+
+.form-actions {
+  margin-top: 0.25rem;
+}
+
+.contact-form .btn {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .contact-form .btn {
+    width: auto;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0b1220;   /* darker slate */
     --text: #f8fafc; /* light text */
     --muted: #cbd5e1;/* slate-300 */
+    --danger: #f87171; /* red-400 */
+    --danger-bg: #3f1f1f; /* a very dark red tint */
+  }
+
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form input[type="tel"],
+  .contact-form textarea {
+    border-color: rgba(248, 250, 252, 0.2); /* based on text color */
   }
 }
