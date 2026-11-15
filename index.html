@@ -11,6 +11,12 @@
     <main class="container" role="main">
       <h1>haddadco for parts</h1>
       <p class="subtitle">Coming soon — quality parts, reliable service.</p>
+
+      <div class="control-group">
+        <label for="date-picker" id="date-label">Select a date</label>
+        <input type="date" id="date-picker" name="date" aria-labelledby="date-label" />
+      </div>
+
       <button id="contact-btn" class="btn" type="button" aria-label="Contact us by email">Contact us</button>
       <p id="contact-status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
     </main>
@@ -33,6 +39,17 @@
             }, 100);
           }
         });
+      })();
+
+      // Set today's date (local timezone) as the default value for the date picker
+      (function () {
+        var dateInput = document.getElementById('date-picker');
+        if (!dateInput) return;
+        var today = new Date();
+        var y = today.getFullYear();
+        var m = String(today.getMonth() + 1).padStart(2, '0');
+        var d = String(today.getDate()).padStart(2, '0');
+        dateInput.value = [y, m, d].join('-');
       })();
     </script>
   </body>
