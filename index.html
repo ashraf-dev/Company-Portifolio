@@ -47,6 +47,11 @@
         </div>
 
         <div class="form-field">
+          <label for="date-picker">Preferred contact date</label>
+          <input id="date-picker" name="date" type="date" aria-labelledby="contact-heading" />
+        </div>
+
+        <div class="form-field">
           <label for="contact-description">Description</label>
           <textarea id="contact-description" name="description" rows="4" placeholder="How can we help?"></textarea>
           <p class="field-error" id="error-description"></p>
@@ -210,6 +215,17 @@
             }, 100);
           }
         });
+      })();
+
+      // Set today's date (local timezone) as the default value for the date picker
+      (function () {
+        var dateInput = document.getElementById('date-picker');
+        if (!dateInput) return;
+        var today = new Date();
+        var y = today.getFullYear();
+        var m = String(today.getMonth() + 1).padStart(2, '0');
+        var d = String(today.getDate()).padStart(2, '0');
+        dateInput.value = [y, m, d].join('-');
       })();
     </script>
   </body>
