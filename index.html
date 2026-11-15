@@ -47,6 +47,11 @@
         </div>
 
         <div class="form-field">
+          <label for="date-picker">Preferred contact date (optional)</label>
+          <input id="date-picker" name="date" type="date" />
+        </div>
+
+        <div class="form-field">
           <label for="contact-description">Description</label>
           <textarea id="contact-description" name="description" rows="4" placeholder="How can we help?"></textarea>
           <p class="field-error" id="error-description"></p>
@@ -70,6 +75,18 @@
         var emailEl = document.getElementById('contact-email');
         var mobileEl = document.getElementById('contact-mobile');
         var descEl = document.getElementById('contact-description');
+        var dateEl = document.getElementById('date-picker');
+
+        // Initialize date picker with today's date and prevent past dates
+        if (dateEl) {
+          var today = new Date();
+          var y = today.getFullYear();
+          var m = String(today.getMonth() + 1).padStart(2, '0');
+          var d = String(today.getDate()).padStart(2, '0');
+          var todayStr = [y, m, d].join('-');
+          dateEl.value = todayStr; // default to today
+          dateEl.setAttribute('min', todayStr); // optional enhancement to disallow past dates
+        }
 
         var errName = document.getElementById('error-name');
         var errEmail = document.getElementById('error-email');
@@ -145,6 +162,7 @@
           var email = (emailEl.value || '').trim();
           var mobile = (mobileEl.value || '').trim();
           var desc = (descEl.value || '').trim();
+          var date = ((dateEl && dateEl.value) || '').trim();
 
           var hasError = false;
 
@@ -192,6 +210,7 @@
             'Name: ' + name,
             'Email: ' + email,
             'Mobile: ' + (mobile || '-') ,
+            'Preferred contact date: ' + (date || '-'),
             '',
             'Description:',
             desc || '-'
@@ -211,6 +230,7 @@
           }
         });
       })();
+
     </script>
   </body>
 </html>

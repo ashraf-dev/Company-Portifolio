@@ -131,6 +131,7 @@ h1 {
 .contact-form input[type="text"],
 .contact-form input[type="email"],
 .contact-form input[type="tel"],
+.contact-form input[type="date"],
 .contact-form textarea {
   width: 100%;
   padding: 0.625rem 0.75rem;
@@ -191,6 +192,7 @@ h1 {
   .contact-form input[type="text"],
   .contact-form input[type="email"],
   .contact-form input[type="tel"],
+  .contact-form input[type="date"],
   .contact-form textarea {
     border-color: rgba(248, 250, 252, 0.2); /* based on text color */
   }
